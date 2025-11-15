@@ -1,22 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './styling/styles.css'
 import PlayerThrow from './components/PlayerThrow';
 import ComputerThrow from './components/ComputerThrow';
+import Results from './components/Results';
 
 function App() {
   const [playerThrow, setPlayerThrow] = useState(0);
-  const [cpuThrow, setCpuThrow] = useState(0);
+  const [cpuThrow, setCpuThrow] = useState("...");
   const [playerScore, setPlayerScore] = useState(0);
   const [cpuScore, setCpuScore] = useState();
+  const [turn, setTurn] = useState("player");
   const textChoices = ["rock", "paper", "scissors"];
-  let turn = "cpu";
+  const cpuThrowRef = useRef(null);
 
   function switchTurn(){
       if (turn === "cpu"){
-        turn = "player";
+        setTurn("player");
       } else {
-        turn = "cpu";
+        setTurn("cpu");
       }
+      console.log("switch turn to : " + turn);
   }
 
   return (
@@ -29,12 +32,13 @@ function App() {
           <button id="player-confirm" onClick={switchTurn}> confirm?</button>
         </div>
         <div className="cpu">
-          <ComputerThrow onCPUSelect={setCpuThrow} isActive={turn}/>
-          <p id='cpu-throw'>CPU Throw: ... </p>
+          <ComputerThrow onCPUSelect={setCpuThrow} curTurn={turn}/>
+          <p>CPU Throw: <span ref={cpuThrowRef}>{cpuThrow}</span> </p>
         </div>
-        
       </section>
-      
+      <section className="post-game">
+        <Results pThrow={playerThrow} cThrow={cpuThrow}/>
+      </section>
     </div>
   )
 }

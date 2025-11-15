@@ -9,19 +9,21 @@ export default function ComputerThrow({ onCPUSelect, curTurn}){
     const cpuChoiceRef = useRef(null);
     const isFirstRender = useRef(true);
 
-    // useEffect(() => {
-    //     if (isFirstRender.current) {
-    //         isFirstRender.current = false;
-    //         return;
-    //     }
-    //     async function runImageCycle() {
-    //         const result = await imageCycle();
-    //         console.log(result);
-    //     }
-    //     runImageCycle();
-    // }, [curTurn]);
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        if (curTurn === "cpu"){
+            imageCycle().then((result) => {
+                cpuSelect();
+                console.log("run cpu select");
+            });
+        }
+    }, [curTurn]);
 
     function imageCycle(){
+        console.log("run img cycle");
         return new Promise(resolve => {
             let index = 0;
             setIsHighlighted(true);
@@ -41,9 +43,10 @@ export default function ComputerThrow({ onCPUSelect, curTurn}){
 
     function cpuSelect(event){
         // make this the selected button
-        const randInt = Math.floor(Math.random() * 3);
+        let randInt = Math.floor(Math.random() * 3);
         
         onCPUSelect(textChoices[randInt]);
+        setCurrentImage(`/images/${imgPaths[randInt]}`);
     }
 
     return(
