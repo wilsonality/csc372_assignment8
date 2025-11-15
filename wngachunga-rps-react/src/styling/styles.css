@@ -1,0 +1,50 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+section.turns{
+  display: flex;
+  gap: 2em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.player-choice-box{
+  display: flex;
+  gap: 2em;
+  text-align: center;
+
+  img.p-choice{
+    height: 150px;
+    width: 200px;
+    object-fit: cover;
+  }
+  img.selected{
+    border: 3px solid palevioletred;
+  }
+
+}
+
+
+.cpu-choice-box{
+  gap: 2em;
+  text-align: center;
+
+  img{
+    height: 400px;
+    width: 400px;
+    object-fit: cover;
+  }
+  img.highlight{
+    border: 3px solid rgb(174, 112, 216);
+  }
+
+}
+
