@@ -3,15 +3,30 @@ import './styling/styles.css'
 import PlayerThrow from './components/PlayerThrow';
 import ComputerThrow from './components/ComputerThrow';
 import Results from './components/Results';
+import ScoreBoard from './components/Scoreboard';
+import GameReset from "./components/GameReset";
 
 function App() {
   const [playerThrow, setPlayerThrow] = useState(0);
   const [cpuThrow, setCpuThrow] = useState("...");
-  const [playerScore, setPlayerScore] = useState(0);
-  const [cpuScore, setCpuScore] = useState();
   const [turn, setTurn] = useState("player");
   const textChoices = ["rock", "paper", "scissors"];
   const cpuThrowRef = useRef(null);
+
+  const [winner, setWinner] = useState(null);
+  const [playerScore, setPlayerScore] = useState(0);
+  const [cpuScore, setCpuScore] = useState(0);
+  const [drawCt, setDrawCt] = useState(0);
+
+  useEffect(() => {
+    if (winner === "player") {
+      setPlayerScore(prev => prev + 1);
+    } else if (winner === "cpu") {
+      setCpuScore(prev => prev + 1);
+    } else if (winner === "draw") {
+      setDrawCt(prev => prev + 1);
+    }
+  }, [winner]);
 
   function switchTurn(){
       if (turn === "cpu"){
@@ -19,7 +34,6 @@ function App() {
       } else {
         setTurn("cpu");
       }
-      console.log("switch turn to : " + turn);
   }
 
   return (
@@ -37,7 +51,12 @@ function App() {
         </div>
       </section>
       <section className="post-game">
-        <Results pThrow={playerThrow} cThrow={cpuThrow}/>
+        <Results pThrow={textChoices[playerThrow]} cThrow={cpuThrow} onDetermine={setWinner}/>
+        <ScoreBoard cpuScore={cpuScore} playerScore={playerScore} drawCt={drawCt} onReset={() => {
+          setPlayerScore(0);
+          setCpuScore(0);
+          setDrawCt(0);
+        }}/>
       </section>
     </div>
   )
